@@ -7,7 +7,64 @@
     <title>Guia Bjj</title>
 </head>
 <body>
-    
+    <header>
+        <h1>BJJ Catalogo</h1>
+
+        <div class="pesquisar">
+            <input type="text" placeholder="Nome do time...">
+        </div>
+    </header>
+
+
+    <main>
+        <section class="time">
+            <h2>Times de jiu-jitsu</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <img src="" alt="logo">
+                    <h3>Equipe</h3>
+                    <p>Pais</p>
+                    <button>Ver detalhes</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="detalhes">
+            <div class="modal">
+                <button class="fechar-btn" id="fecharModal">x</button>
+            </div>
+
+            <div class="time-header">
+                <img src="" alt="Logo do time">
+                <div>
+                    <h2>Nome equipe</h2>
+                    <span>Time</span>
+                </div>
+            </div>
+
+            <div class="time-info">
+                <h3>Informações</h3>
+
+                <p><strong>Fundação:</strong> ano</p>
+                <p><strong>Fundador: </strong> Nome</p>
+            </div>
+
+            <div class="time-descricao">
+                <h3>Descrição</h3>
+
+                <p>descrição da equipe</p>
+            </div>
+
+            <div class="modal-acoes">
+                <button class="edit-btn">Editar</button>
+                <button class="delete-btn">Excluir</button> 
+            </div>
+        </section>
+    </main>
+
+
+
     <script src="Script.js"></script>
 </body>
 </html>
