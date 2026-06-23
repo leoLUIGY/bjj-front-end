@@ -21,13 +21,8 @@
             <h2>Times de jiu-jitsu</h2>
 
             <button class="btn-primary" id="openCreate">+ Novo Time</button>
-            <div class="cards">
-                <div class="card">
-                    <img src="" alt="logo">
-                    <h3>Equipe</h3>
-                    <p>Pais</p>
-                    <button>Ver detalhes</button>
-                </div>
+            <div class="cards" id="cards">
+           
             </div>
 
             <div class="cadastro-modal" id="cadastro-modal">
@@ -53,7 +48,7 @@
                     <textarea rows="5" id="descricao"></textarea>
 
                     <div class="form-acoes">
-                        <button type="button">Cancelar</button>
+                        <button type="button" id="cancelCreate">Cancelar</button>
                         <button type="submit">Salvar</button>
                     </div>
                 </form>
@@ -68,29 +63,29 @@
                     <button class="fechar-btn" id="fecharModal">x</button>
 
                     <div class="time-header">
-                        <img src="" alt="Logo do time">
+                        <img src="" id="detalheLogo" alt="Logo do time">
                         <div>
-                            <h2>Nome equipe</h2>
-                            <span>Time</span>
+                            <h2 id="detalheNome">Nome equipe</h2>
+                            <span id="detalhePais">Time</span>
                         </div>
                     </div>
 
                     <div class="time-info">
                         <h3>Informações</h3>
 
-                        <p><strong>Fundação:</strong> ano</p>
-                        <p><strong>Fundador: </strong> Nome</p>
+                        <p><strong>Fundação:</strong> <span id="detalheFundacao">ano</span></p>
+                        <p><strong>Fundador: </strong> <span id="detalheDundador">Nome</span></p>
                     </div>
 
                     <div class="time-descricao">
                         <h3>Descrição</h3>
 
-                        <p>descrição da equipe</p>
+                        <p id="detalheDescricao">descrição da equipe</p>
                     </div>
 
                     <div class="modal-acoes">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Excluir</button> 
+                        <button class="edit-btn" id="editBtn">Editar</button>
+                        <button class="delete-btn" id="deleteBtn">Excluir</button> 
                     </div>
                 </div>
             </div>
