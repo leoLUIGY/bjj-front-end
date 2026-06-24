@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -42,6 +42,7 @@ main {
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
+    margin-bottom: 20px;
 }
 
 .btn-primary:hover {
@@ -174,6 +175,21 @@ main {
     gap: 10px;
 }
 
+.form-acoes button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#cancelCreate {
+    background-color: #444;
+    color: white;
+}
+
+#cancelCreate:hover {
+    background-color: #555;
+}
 /* DETALHES */
 
 .detalhes {
