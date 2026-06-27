@@ -5,7 +5,8 @@
 let times = []
 let timeSelecionado = null;
 let editando = false;
-const URL = "http://127.0.0.1:5000/";
+const URL = "http://127.0.0.1:5000";
+const IMAGEM_DEFAULT = 'https://static.vecteezy.com/system/resources/previews/048/910/778/large_2x/default-image-missing-placeholder-free-vector.jpg'
 
 // ===================
 // ELEMENTOS
@@ -34,6 +35,12 @@ window.onload = () => {
     }
 }
 
+
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
 // ===================
 // EVENTOS
 // ===================
@@ -46,16 +53,23 @@ function configurarEventos(){
     btnDelete.addEventListener("click", excluirTime);
     searchInput.addEventListener("input", filtrarTimes);
     form.addEventListener("submit", salvarTime);
-    // detalhes.addEventListener("click", FecharDetalhesAoClicarFora);
-    // cadastroModal.addEventListener("click", fecharCadastroAoClicarFora);
 }
 
 
 // ===================
 // API
 // ===================
+async function carregarTime(id) {
+    const response = await fetch(`${URL}/time?id=${id}`, {
+        method: "GET"
+    })
+
+    return await response.json();
+}
+
 
 async function carregarTimes() {
+    times = [];
     const response = await fetch(`${URL}/times`)
     times = await response.json();
 
@@ -63,37 +77,60 @@ async function carregarTimes() {
 }
 
 async function criarTime(dados) {
+    const formData = new FormData();
+    formData.append('nome', dados.nome);
+    formData.append('nome_fundador', dados.nome_fundador);
+    formData.append('data_fundacao', formatarData(dados.data_fundacao));
+    formData.append('logo_url', dados.logo_url );
+    formData.append('pais', dados.pais);
+    formData.append('descricao', dados.descricao);
+
     return await fetch(`${URL}/time`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
+        body: formData
+    }) 
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 async function atualizarTime(dados) {
+    const formData = new FormData();
+    formData.append('id', dados.id)
+    formData.append('nome', dados.nome);
+    formData.append('nome_fundador', dados.nome_fundador);
+    formData.append('data_fundacao', formatarData(dados.data_fundacao));
+    formData.append('logo_url', dados.logo_url);
+    formData.append('pais', dados.pais);
+    formData.append('descricao', dados.descricao);
+
     return await fetch(`${URL}/time`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
+        body: formData
+    }) 
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 async function deletarTime(id) {
     return await fetch(`${URL}/time?id=${id}`, {
         method: "DELETE"
     })
+     .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 // ===================
 // MODAL DETALHES 
 // ===================
 
-function abrirDetalhe(id) {
-    const time = times.find(t => t.id === id);
+async function abrirDetalhe(id) {
+    const time = await carregarTime(id);
 
     timeSelecionado = time
 
@@ -122,6 +159,23 @@ function fecharDetalhes() {
 // =================
 
 function abrirCadastro() {
+    editando = false;
+    document.getElementById("formTitulo").textContent = "Novo Time";
+
+    document.getElementById("logo").value = "";
+
+    document.getElementById("nome").value = "";
+
+    document.getElementById("pais").value = "";
+
+   
+    document.getElementById("fundacao").value = "";
+
+    document.getElementById("fundador").value = ""
+
+    document.getElementById("descricao").value = ""
+
+    detalhes.classList.remove("active");
     cadastroModal.classList.add("active");
 }
 
@@ -140,7 +194,8 @@ function editarTime() {
 
     document.getElementById("pais").value = timeSelecionado.pais;
 
-    document.getElementById("fundacao").value = timeSelecionado.data_fundacao;
+    const [dia, mes, ano] = timeSelecionado.data_fundacao.split("/");
+    document.getElementById("fundacao").value = `${ano}-${mes}-${dia}`;
 
     document.getElementById("fundador").value = timeSelecionado.nome_fundador;
 
@@ -169,6 +224,8 @@ async function salvarTime(e) {
        
 
         if (editando) {
+            novoTime.id = timeSelecionado.id;
+            console.log(JSON.stringify(novoTime))
            await atualizarTime(novoTime)
         } else {
             await criarTime(novoTime)
@@ -190,7 +247,7 @@ async function excluirTime() {
     if (!confirmar) return;
 
     try {
-        excluirTime(timeSelecionado.id);
+        await deletarTime(timeSelecionado.id);
         detalhes.classList.remove("active");
         carregarTimes()
     } catch(erro) {
@@ -210,11 +267,11 @@ function renderizarTimes(){
     times.forEach(time => {
         cards.innerHTML += `
             <div class="card">
-                <img src="${time.logo_url || ''}" alt="${time.nome}">
+                <img src="${time.logo_url || IMAGEM_DEFAULT}" alt="${time.nome}">
                 <h3>${time.nome}</h3>
                 <p>${time.pais}</p>
 
-                <button onclick="abrirDetalhes(${time.id})">
+                <button onclick="abrirDetalhe(${time.id})">
                     Ver detalhes
                 </button>
             </div>
